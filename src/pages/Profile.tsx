@@ -1,9 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Navbar from '../components/Navbar';
 import './Profile.css';
-import { 
-  User as UserIcon, Mail, Phone, MapPin, Award, Calendar, Edit2, Save, 
-  Camera, Briefcase, Star, CheckCircle, GraduationCap, 
+import {
+  User as UserIcon, Mail, Phone, MapPin, Award, Calendar, Edit2, Save,
+  Camera, Briefcase, Star, CheckCircle, GraduationCap,
   Image as ImageIcon, Globe, Clock, ShieldCheck, ChevronRight,
   Users, X
 } from 'lucide-react';
@@ -14,7 +14,7 @@ const Profile: React.FC = () => {
   const { user } = useAuth();
   const [isEditing, setIsEditing] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  
+
   const [userData, setUserData] = useState({
     name: '',
     role: '',
@@ -31,8 +31,8 @@ const Profile: React.FC = () => {
     certifications: [
       { id: 1, name: 'Técnico Agrícola', institution: 'SENA', year: '2023' }
     ],
-    gallery: [],
-    reviews: []
+    gallery: [] as string[],
+    reviews: [] as { id: number; user: string; rating: number; date: string; comment: string; }[]
   });
 
   const [loading, setLoading] = useState(true);
@@ -76,7 +76,7 @@ const Profile: React.FC = () => {
   const handleSave = async () => {
     setIsEditing(false);
     if (!user) return;
-    
+
     // Split name back to first_name and last_name roughly
     const nameParts = userData.name.split(' ');
     const firstName = nameParts[0];
@@ -88,7 +88,7 @@ const Profile: React.FC = () => {
       phone: userData.phone,
       // You could map additional fields here if added to schema
     }).eq('id', user.id);
-    
+
     alert('Perfil actualizado guardado exitosamente.');
   };
 
@@ -130,19 +130,19 @@ const Profile: React.FC = () => {
               <button className="change-photo-btn" onClick={handleImageClick}>
                 <Camera size={18} />
               </button>
-              <input 
-                type="file" 
-                ref={fileInputRef} 
-                onChange={handleImageChange} 
-                style={{ display: 'none' }} 
+              <input
+                type="file"
+                ref={fileInputRef}
+                onChange={handleImageChange}
+                style={{ display: 'none' }}
                 accept="image/*"
               />
             </div>
             <div className="profile-title-section">
               <div className="name-edit-row">
                 <h1>{userData.name}</h1>
-                <button 
-                  className="edit-btn" 
+                <button
+                  className="edit-btn"
                   onClick={() => setIsEditing(true)}
                 >
                   <Edit2 size={18} /> Editar Perfil
@@ -299,7 +299,7 @@ const Profile: React.FC = () => {
             </div>
           </section>
         </div>
-        
+
         {isEditing && (
           <div className="modal-overlay">
             <div className="modal-content">
@@ -312,19 +312,19 @@ const Profile: React.FC = () => {
               <div className="modal-body">
                 <div>
                   <label>Nombre Completo</label>
-                  <input type="text" value={userData.name} onChange={(e) => setUserData({...userData, name: e.target.value})} />
+                  <input type="text" value={userData.name} onChange={(e) => setUserData({ ...userData, name: e.target.value })} />
                 </div>
                 <div>
                   <label>Teléfono</label>
-                  <input type="text" value={userData.phone} onChange={(e) => setUserData({...userData, phone: e.target.value})} />
+                  <input type="text" value={userData.phone} onChange={(e) => setUserData({ ...userData, phone: e.target.value })} />
                 </div>
                 <div>
                   <label>Ubicación</label>
-                  <input type="text" value={userData.location} placeholder="Ej. Suesca, Cundinamarca" onChange={(e) => setUserData({...userData, location: e.target.value})} />
+                  <input type="text" value={userData.location} placeholder="Ej. Suesca, Cundinamarca" onChange={(e) => setUserData({ ...userData, location: e.target.value })} />
                 </div>
                 <div>
                   <label>Sobre mí</label>
-                  <textarea value={userData.bio} placeholder="Cuéntanos un poco sobre ti..." onChange={(e) => setUserData({...userData, bio: e.target.value})} rows={4} />
+                  <textarea value={userData.bio} placeholder="Cuéntanos un poco sobre ti..." onChange={(e) => setUserData({ ...userData, bio: e.target.value })} rows={4} />
                 </div>
               </div>
               <div className="modal-footer">
